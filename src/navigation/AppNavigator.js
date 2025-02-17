@@ -2,6 +2,7 @@ import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import LoginScreen from '../screens/LoginScreen';
 import ProductListingScreen from '../screens/ProductListScreen';
@@ -11,8 +12,21 @@ import OrderDetailsScreen from '../screens/OrderDetailsScreen';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
+
+const tabIcons = {
+  Products: 'shopping-outline',
+  Cart: 'cart-outline',
+  Orders: 'clipboard-list-outline',
+};
 const Tabs = () => (
-  <Tab.Navigator>
+  <Tab.Navigator
+   screenOptions={({ route }) => ({
+      tabBarIcon: ({ color, size }) => (
+        <Icon name={tabIcons[route.name]} size={size} color={color} />),
+      tabBarActiveTintColor: '#6200ea',
+      tabBarInactiveTintColor: 'gray',
+      tabBarStyle: { backgroundColor: '#fff', paddingBottom: 5, height: 60 },
+    })}>
     <Tab.Screen name="Products" component={ProductListingScreen} />
     <Tab.Screen name="Cart" component={CartScreen} />
     <Tab.Screen name="Orders" component={OrderDetailsScreen} />
