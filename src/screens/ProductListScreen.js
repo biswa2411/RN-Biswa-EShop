@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect } from 'react';
+import React, { useLayoutEffect } from 'react';
 import { View, FlatList, TouchableOpacity, StyleSheet, ActivityIndicator, Dimensions } from 'react-native';
 import { Text, Card, Button } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
@@ -7,12 +7,17 @@ import { selectProduct } from '../redux/slices/productDetailsSlice';
 
 const { width } = Dimensions.get('window');
 const numColumns = 2;
+const cardHeight = 230; // Fixed height for all cards
+const titleMaxLines = 2;
+
 const ProductListingScreen = ({ navigation }) => {
   const dispatch = useDispatch();
   const { list, loading, error } = useSelector((state) => state.products);
+
   useLayoutEffect(() => {
-   if(list?.length === 0){ dispatch(fetchProductsRequest())};
-  // dispatch(fetchProductsRequest())
+    if (list?.length === 0) {
+      dispatch(fetchProductsRequest());
+    }
   }, []);
 
   if (loading) {
@@ -43,15 +48,18 @@ const ProductListingScreen = ({ navigation }) => {
         columnWrapperStyle={styles.row}
         renderItem={({ item }) => (
           <TouchableOpacity
-          onPress={() => {
+            onPress={() => {
               dispatch(selectProduct(item)); // Store product in Redux
               navigation.navigate('ProductDetails'); // Navigate without params
             }}
-          style={styles.item}>
-            <Card >
+            style={styles.item}
+          >
+            <Card mode="contained" style={styles.card}>
               <Card.Cover source={{ uri: item.thumbnail }} style={styles.image} />
               <Card.Content>
-                <Text style={styles.title}>{item.title}</Text>
+                <Text style={styles.title} numberOfLines={titleMaxLines} ellipsizeMode="tail">
+                  {item.title}
+                </Text>
                 <Text style={styles.price}>${item.price}</Text>
               </Card.Content>
             </Card>
@@ -66,7 +74,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f8f8f8',
-    paddingVertical:5,
+    paddingVertical: 5,
     paddingHorizontal: 10,
   },
   centered: {
@@ -79,8 +87,11 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   item: {
-    width: (width / numColumns) - 20,
+    width: (width / numColumns) - 18,
     marginBottom: 10,
+  },
+  card: {
+    height: cardHeight,
   },
   image: {
     height: 150,
@@ -88,7 +99,7 @@ const styles = StyleSheet.create({
     borderBottomColor: '#ddd',
   },
   title: {
-    fontSize: 16,
+    fontSize: 12,
     fontWeight: 'bold',
     marginTop: 10,
     color: '#333',
