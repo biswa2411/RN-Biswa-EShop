@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
   },
   
   proceedButton: {
-    marginVertical: 15,
+    margin: 15,
     backgroundColor: '#6200ea',
   },
 });

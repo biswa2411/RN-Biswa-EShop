@@ -2,13 +2,17 @@ import React from 'react';
 import {View, StyleSheet, FlatList, Alert} from 'react-native';
 import {Text, Button, Card, IconButton} from 'react-native-paper';
 import {useDispatch, useSelector} from 'react-redux';
-import {clearCart, removeFromCart, updateQuantity} from '../redux/slices/cartSlice';
-import { placeOrder } from '../redux/slices/orderSlice';
+import {
+  clearCart,
+  removeFromCart,
+  updateQuantity,
+} from '../redux/slices/cartSlice';
+import {placeOrder} from '../redux/slices/orderSlice';
 
 const CartScreen = ({navigation}) => {
   const dispatch = useDispatch();
   const {items, totalPrice} = useSelector(state => state.cart);
-console.log("CartItems", items)
+
   const handleRemoveItem = id => {
     Alert.alert('Remove Item', 'Are you sure you want to remove this item?', [
       {text: 'Cancel'},
@@ -18,7 +22,8 @@ console.log("CartItems", items)
 
   return (
     <View style={styles.container}>
-      <FlatList
+     {items.length > 0 ? (<>
+     <FlatList
         data={items}
         keyExtractor={item => item.id.toString()}
         renderItem={({item}) => (
@@ -70,6 +75,9 @@ console.log("CartItems", items)
         style={styles.proceedButton}>
         Proceed to Order
       </Button>
+     </>) : (
+             <Text style={styles.noOrderText}>No items added to cart yet.</Text>
+           )}
     </View>
   );
 };
@@ -110,6 +118,13 @@ const styles = StyleSheet.create({
   proceedButton: {
     marginTop: 15,
     backgroundColor: '#6200ea',
+  },
+  noOrderText: {
+    fontSize: 18,
+    fontStyle: 'italic',
+    textAlign: 'center',
+    color: '#777',
+    marginTop: 20,
   },
 });
 

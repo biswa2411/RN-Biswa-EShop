@@ -1,7 +1,6 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { View, StyleSheet, ActivityIndicator } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectProduct } from '../redux/slices/productDetailsSlice';
 import { addToCart } from '../redux/slices/cartSlice';
 import { Card, Text, Button } from 'react-native-paper';
 
@@ -29,7 +28,7 @@ const ProductDetailsScreen = ({ navigation }) => {
           <Text style={styles.price}>${selectedProduct.price}</Text>
         </Card.Content>
         <Card.Actions>
-          <Button mode="contained" onPress={() => {dispatch(addToCart(selectedProduct)); navigation.navigate('Main');}} style={styles.button}>
+          <Button mode="contained" onPress={() => {dispatch(addToCart(selectedProduct)); navigation.navigate('Main',{screen: 'Cart'});}} style={styles.button}>
             Add to Cart
           </Button>
         </Card.Actions>
